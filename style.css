@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: Verdana, sans-serif;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(30, 30, 46)
+}
+
+.calc {
+  width: 500px;
+  height: 800px;
+  padding: 10px;
+  background-color: rgb(49, 50, 68);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.display {
+  height: 250px;
+  padding: 3px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
+
+.input {
+  flex: 1;
+  background-color: rgb(127, 132, 156);
+  font-size: 80px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;  
+}
+
+.result {
+  flex: 1;
+  background-color: rgb(127, 132, 156);
+  font-size: 40px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.input div, .result div {
+  padding: 0 10px;
+}
+
+.row-1, .row-2,
+.row-3, .row-4,
+.row-5 {
+  gap: 5px;
+  padding: 3px;
+  display: flex;
+  flex: 1;
+}
+
+button {
+  font-size: 40px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.one, .two, .three,
+.four, .five, .six,
+.seven, .eight, .nine,
+.zero {
+  background-color: rgb(180, 190, 254);
+}
+
+.decimal {
+  background-color: rgb(137, 180, 250);
+}
+
+.backspace {
+  background-color: rgb(242, 205, 205);
+  font-size: 35px;
+}
+
+.equals {
+  background-color:  rgb(203, 166, 247);
+}
+
+.addition, .subtraction,
+.multiplication, .division {
+  background-color: rgb(245, 194, 231);
+}
+
+.clear {
+  background-color: rgb(245, 224, 220);
+}
