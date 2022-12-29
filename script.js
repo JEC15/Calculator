@@ -74,7 +74,7 @@ function addNumber(arr, number) {
 
 function addOperator(arr, operator) {
   const lastIndex = arr.length - 1;
-
+  
   if (!arr.length) {
     if (operator === '-') {  
       arr.push(operator);
@@ -94,11 +94,17 @@ function addOperator(arr, operator) {
       if ('x/'.indexOf(arr[lastIndex]) >= 0) {
         if (operator !== '-'){
           arr[lastIndex] = operator;
+        
         } else {
           arr.push(operator)
         }
       
       } else {
+        if (arr.length === 1) return false;
+        if (!isFinite(arr[lastIndex]) && !isFinite(arr[lastIndex - 1])) {
+          operations.pop();
+          return true;
+        }
         arr[lastIndex] = operator;
       }
     }
@@ -171,7 +177,7 @@ function handleNumberInput(str) {
 }
 
 function handleOperatorInput(str) {
-  if (operations.length >= 3) {
+  if (operations.length >= 3 && isFinite(operations[operations.length - 1])) {
     operations = [];
     operations.push(results);
   }
@@ -218,7 +224,6 @@ function handleBackspaceInput() {
 
 function handleKeyboardInput(event) {
   const key = event.code;
-  console.log(key)
   const button = document.querySelector(`button[data-code='${key}']`);
   if (!button) return;
   if (key === 'NumpadDivide') event.preventDefault();
