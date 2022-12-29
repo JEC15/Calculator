@@ -35,7 +35,7 @@
 .input {
   flex: 1;
   background-color: rgb(127, 132, 156);
-  font-size: 80px;
+  font-size: 40px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   display: flex;

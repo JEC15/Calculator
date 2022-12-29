@@ -39,7 +39,7 @@ function getResults() {
 
   if (!isFinite(num1) || !isFinite(num2)) return '';
 
-  if (operator === '/' && (Number(num1) === 0 || Number(num2) === 0)) return 'Divided by zero';
+  if (operator === '/' && Number(num2) === 0) return 'Division by zero';
 
   const result = operate(operator, num1, num2);
     
@@ -159,6 +159,80 @@ function toggleDecimalButton() {
   }
 }
 
+function handleNumberInput(str) {
+  addNumber(operations, str);
+
+  toggleDecimalButton();
+
+  results = getResults();
+  if (results === 'Division by zero') results = '';
+
+  updateDisplay();
+}
+
+function handleOperatorInput(str) {
+  if (operations.length >= 3) {
+    operations = [];
+    operations.push(results);
+  }
+
+  const success = addOperator(operations, str);
+  if (!success) return;
+
+  toggleDecimalButton();
+
+  results = getResults();
+  if (results === 'Division by zero') results = '';
+
+  updateDisplay();
+}
+
+function handleEqualsInput() {
+  if (getResults() === 'Division by zero') {
+    results = 'Very funny';
+    updateDisplay();
+  }
+  
+  if (!resultOnDisplay.textContent) return;
+  
+  userInput.textContent = resultOnDisplay.textContent;
+  resultOnDisplay.textContent = '';
+  adjustFontSize(userInput);
+}
+
+function handleBackspaceInput() {
+  const lastIndex = operations.length - 1;
+  if (!operations[lastIndex]) return;
+    
+  operations[lastIndex] = operations[lastIndex].slice(0,-1);
+  
+  if (!operations[lastIndex]) operations.pop();
+  
+  toggleDecimalButton();
+  
+  results = getResults();
+  if (results === 'Division by zero') results = '';
+
+  updateDisplay();
+}
+
+function handleKeyboardInput(event) {
+  const key = event.code;
+  const button = document.querySelector(`button[data-code='${key}']`);
+  if (!button) return;
+  if (key === 'NumpadDivide') event.preventDefault();
+  
+  if ('0123456789.'.indexOf(button.textContent) >= 0) handleNumberInput(button.textContent);
+
+  if ('/*-+'.indexOf(button.textContent) >= 0) handleOperatorInput(button.textContent);
+
+  if (button.textContent === '=') handleEqualsInput();
+
+  if (button.textContent === 'BACK') handleBackspaceInput();
+
+  if (button.textContent === 'AC') resetAll();
+}
+
 let operations = [];
 let results = '';
 const userInput = document.querySelector('.input div');
@@ -170,69 +244,14 @@ const equalsButton = document.querySelector('.equals');
 const backspaceButton = document.querySelector('.backspace');
 const clearButton = document.querySelector('.clear');
 
-numberButtons.forEach(button => button.addEventListener('click', (e) => {
-  const num = e.currentTarget.textContent;
-  
-  addNumber(operations, num);
+numberButtons.forEach(button => button.addEventListener('click', (e) => handleNumberInput(e.currentTarget.textContent)))
 
-  toggleDecimalButton();
+operatorButtons.forEach(button => button.addEventListener('click', (e) => handleOperatorInput(e.currentTarget.textContent)))
 
-  results = getResults();
+equalsButton.addEventListener('click', handleEqualsInput)
 
-  if (results === 'Divided by zero') results = '';
-
-  updateDisplay();
-}))
-
-operatorButtons.forEach(button => button.addEventListener('click', (e) => {
-  if (operations.length >= 3) {
-    operations = [];
-    operations.push(results);
-  }
-
-  const operator = e.currentTarget.textContent;
-
-  const success = addOperator(operations, operator);
-  if (!success) return;
-
-  toggleDecimalButton();
-
-  results = getResults();
-
-  if (results === 'Divided by zero') results = '';
-
-  updateDisplay();
-}))
-
-equalsButton.addEventListener('click', () => {  
-  if (getResults() === 'Divided by zero') {
-    results = 'Very funny';
-    updateDisplay();
-  }
-  
-  if (!resultOnDisplay.textContent) return;
-  
-  userInput.textContent = resultOnDisplay.textContent;
-  resultOnDisplay.textContent = '';
-  adjustFontSize(userInput);
-})
-
-backspaceButton.addEventListener('click', () => {
-  const lastIndex = operations.length - 1;
-  
-  if (!operations[lastIndex]) return;
-    
-  operations[lastIndex] = operations[lastIndex].slice(0,-1);
-  
-  if (!operations[lastIndex]) operations.pop();
-  
-  toggleDecimalButton();
-  
-  results = getResults();
-
-  if (results === 'Divided by zero') results = '';
-
-  updateDisplay();
-})
+backspaceButton.addEventListener('click', handleBackspaceInput)
 
 clearButton.addEventListener('click', resetAll);
+
+document.addEventListener('keydown', (e) => handleKeyboardInput(e))
