@@ -218,13 +218,14 @@ function handleBackspaceInput() {
 
 function handleKeyboardInput(event) {
   const key = event.code;
+  console.log(key)
   const button = document.querySelector(`button[data-code='${key}']`);
   if (!button) return;
   if (key === 'NumpadDivide') event.preventDefault();
   
   if ('0123456789.'.indexOf(button.textContent) >= 0) handleNumberInput(button.textContent);
 
-  if ('/*-+'.indexOf(button.textContent) >= 0) handleOperatorInput(button.textContent);
+  if ('/x-+'.indexOf(button.textContent) >= 0) handleOperatorInput(button.textContent);
 
   if (button.textContent === '=') handleEqualsInput();
 
